@@ -56,7 +56,7 @@ image = pipe(
     prompt, 
     negative_prompt=n_prompt, 
     control_image=control_image, 
-    controlnet_conditioning_scale=0.5,
+    controlnet_conditioning_scale=0.7,
     guidance_scale=7.0,
     generator=generator,
     num_inference_steps=28
