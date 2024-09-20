@@ -59,6 +59,6 @@ image = pipe(
     controlnet_conditioning_scale=0.5,
     guidance_scale=7.0,
     generator=generator,
-    num_inference_steps=4
+    num_inference_steps=28
 ).images[0]
-image.save('outputs/sd3_depth_out.jpg')
+image.save('outputs/sd3_out.jpg')
