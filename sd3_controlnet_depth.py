@@ -42,7 +42,7 @@ if not os.path.exists("outputs"):
     os.makedirs("outputs")
 
 # Move the pipeline to the determined device
-pipe.to(device)
+pipe.to(device, torch.float16)
 
 control_image = load_image("inputs/depth.jpeg")
 prompt = "a panda cub, captured in a close-up, in forest, is perched on a tree trunk. good composition, Photography, the cub's ears, a fluffy black, are tucked behind its head, adding a touch of whimsy to its appearance. a lush tapestry of green leaves in the background. depth of field, National Geographic"
