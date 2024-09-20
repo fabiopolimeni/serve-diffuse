@@ -40,3 +40,49 @@ Example:
 ```
 >_ PYTORCH_MPS_HIGH_WATERMARK_RATIO=0.6 python3 sd3_controlnet_depth.py
 ```
+
+## Run
+
+The majority of the step necessary to test build and deploy the are explained here https://replicate.com/docs/guides/push-a-model
+
+### Debug
+
+```
+>_: cog predict -i prompt="monkey scuba diving"
+```
+
+### Build
+
+```
+>_: cog build -t <your-model-name>
+```
+
+### Test
+
+Or, you can use docket images (need the docket deamon running):
+
+```
+# If your model uses a CPU:
+docker run -d -p 5001:5000 <your-model-name>
+
+# If your model uses a GPU:
+docker run -d -p 5001:5000 --gpus all <your-model-name>
+
+# If you're on an M1 Mac:
+docker run -d -p 5001:5000 --platform=linux/amd64 <your-model-name>
+```
+
+and then you can run the model with:
+
+```
+>_: curl http://localhost:5001/predictions -X POST \
+    --header "Content-Type: application/json" \
+    --data '{"input": {"prompt": "a fury dragon" }}'
+```
+
+### Deploy
+
+```
+>_: cog login
+>_: cog push r8.im/<replicate-username>/<your-model-name>
+```

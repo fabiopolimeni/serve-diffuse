@@ -166,3 +166,4 @@ cython_debug/
 # Cog
 .cog/
 outputs/
+output*

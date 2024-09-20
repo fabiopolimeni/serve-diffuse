@@ -54,7 +54,7 @@ class Predictor(BasePredictor):
         seed: int = Input(
             description="Random seed. Leave blank to randomize the seed", default=None
         ),
-    ) -> Output:
+    ) -> Path:
         """Run a single prediction on the model"""
 
         if prompt is None or prompt == "":
@@ -83,4 +83,4 @@ class Predictor(BasePredictor):
         timestamp = int(time.time())
         output_path = f"outputs/out_{timestamp}.png"
         image.save(output_path)
-        return Output(file=output_path)
+        return Path(output_path)
