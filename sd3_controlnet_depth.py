@@ -1,11 +1,11 @@
 import platform
 import torch
+import os
 from diffusers import StableDiffusion3ControlNetPipeline
 from diffusers.models import SD3ControlNetModel
 from diffusers.utils import load_image
 
 # load hf_token from environment file
-import os
 from dotenv import load_dotenv
 
 # Load environment variables from .env.local file
@@ -36,6 +36,10 @@ else:
     device = "cpu"
 
 print(f"Using device: {device}")
+
+# Create the "outputs" folder if it doesn't exist
+if not os.path.exists("outputs"):
+    os.makedirs("outputs")
 
 # Move the pipeline to the determined device
 pipe.to(device)

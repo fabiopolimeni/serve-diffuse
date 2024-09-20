@@ -1,4 +1,5 @@
 # make sure you're logged in with `huggingface-cli login`
+import os
 import torch
 import platform
 from diffusers import StableDiffusionPipeline
@@ -14,6 +15,10 @@ else:
     device = "cpu"
 
 print(f"Using device: {device}")
+
+# Create the "outputs" folder if it doesn't exist
+if not os.path.exists("outputs"):
+    os.makedirs("outputs")
 
 # Move the pipeline to the determined device
 pipe.to(device)
