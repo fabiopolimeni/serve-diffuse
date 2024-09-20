@@ -49,7 +49,8 @@ prompt = "a panda cub, captured in a close-up, in forest, is perched on a tree t
 n_prompt = "bad hands, blurry, NSFW, nude, naked, porn, ugly, bad quality, worst quality"
 
 # First-time "warmup" pass
-_ = pipe(prompt, num_inference_steps=1)
+if (device == "mps"):
+    _ = pipe(prompt, num_inference_steps=1)
 
 generator = torch.Generator(device).manual_seed(4000)
 image = pipe(
