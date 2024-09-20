@@ -1,8 +1,22 @@
 # make sure you're logged in with `huggingface-cli login`
+import torch
+import platform
 from diffusers import StableDiffusionPipeline
 
 pipe = StableDiffusionPipeline.from_pretrained("CompVis/stable-diffusion-v1-4")
-pipe = pipe.to("cuda")
+
+# Determine the device based on the operating system
+if platform.system() == "Darwin" and torch.backends.mps.is_available():  # macOS
+    device = "mps"
+elif platform.system() in ["Linux", "Windows"]:
+    device = "cuda" if torch.cuda.is_available() else "cpu"
+else:
+    device = "cpu"
+
+print(f"Using device: {device}")
+
+# Move the pipeline to the determined device
+pipe.to(device)
 
 prompt = "a photo of an astronaut riding a horse on mars"
 
