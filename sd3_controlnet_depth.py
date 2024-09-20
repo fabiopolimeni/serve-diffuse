@@ -1,4 +1,5 @@
 import platform
+import time
 import torch
 import os
 from diffusers import StableDiffusion3ControlNetPipeline
@@ -62,4 +63,7 @@ image = pipe(
     generator=generator,
     num_inference_steps=28
 ).images[0]
-image.save('outputs/sd3_out.jpg')
+
+timestamp = int(time.time())
+output_path = f"outputs/out_{timestamp}.png"
+image.save(output_path)

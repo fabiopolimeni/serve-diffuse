@@ -26,7 +26,8 @@ pipe.to(device)
 prompt = "a photo of an astronaut riding a horse on mars"
 
 # First-time "warmup" pass
-_ = pipe(prompt, num_inference_steps=1)
+if (device == "mps"):
+    _ = pipe(prompt, num_inference_steps=1)
 
 # Results match those from the CPU device after the warmup pass.
 image = pipe(prompt, num_inference_steps=4).images[0]
