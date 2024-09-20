@@ -28,7 +28,7 @@ pipe = StableDiffusion3ControlNetPipeline.from_pretrained(
 pipe.to("mps")
 
 # config
-control_image = load_image("depth.jpeg")
+control_image = load_image("inputs/depth.jpeg")
 prompt = "a panda cub, captured in a close-up, in forest, is perched on a tree trunk. good composition, Photography, the cub's ears, a fluffy black, are tucked behind its head, adding a touch of whimsy to its appearance. a lush tapestry of green leaves in the background. depth of field, National Geographic"
 n_prompt = "bad hands, blurry, NSFW, nude, naked, porn, ugly, bad quality, worst quality"
 
@@ -46,4 +46,4 @@ image = pipe(
     generator=generator,
     num_inference_steps=4
 ).images[0]
-image.save('image.jpg')
+image.save('outputs/sd3_depth_out.jpg')

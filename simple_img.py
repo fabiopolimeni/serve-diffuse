@@ -11,4 +11,4 @@ _ = pipe(prompt, num_inference_steps=1)
 
 # Results match those from the CPU device after the warmup pass.
 image = pipe(prompt, num_inference_steps=4).images[0]
-image.save("astronaut_rides_horse.png")
+image.save("outputs/astronaut_rides_horse.png")
