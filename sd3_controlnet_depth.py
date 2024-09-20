@@ -1,3 +1,4 @@
+import platform
 import torch
 from diffusers import StableDiffusion3ControlNetPipeline
 from diffusers.models import SD3ControlNetModel
@@ -25,9 +26,20 @@ pipe = StableDiffusion3ControlNetPipeline.from_pretrained(
     "stabilityai/stable-diffusion-3-medium-diffusers",
     controlnet=controlnet
 )
-pipe.to("mps")
 
-# config
+# Determine the device based on the operating system
+if platform.system() == "Darwin" and torch.backends.mps.is_available():  # macOS
+    device = "mps"
+elif platform.system() in ["Linux", "Windows"]:
+    device = "cuda" if torch.cuda.is_available() else "cpu"
+else:
+    device = "cpu"
+
+print(f"Using device: {device}")
+
+# Move the pipeline to the determined device
+pipe.to(device)
+
 control_image = load_image("inputs/depth.jpeg")
 prompt = "a panda cub, captured in a close-up, in forest, is perched on a tree trunk. good composition, Photography, the cub's ears, a fluffy black, are tucked behind its head, adding a touch of whimsy to its appearance. a lush tapestry of green leaves in the background. depth of field, National Geographic"
 n_prompt = "bad hands, blurry, NSFW, nude, naked, porn, ugly, bad quality, worst quality"
@@ -35,8 +47,7 @@ n_prompt = "bad hands, blurry, NSFW, nude, naked, porn, ugly, bad quality, worst
 # First-time "warmup" pass
 _ = pipe(prompt, num_inference_steps=1)
 
-# to reproduce result in our example
-generator = torch.Generator(device="cpu").manual_seed(4000)
+generator = torch.Generator(device).manual_seed(4000)
 image = pipe(
     prompt, 
     negative_prompt=n_prompt, 

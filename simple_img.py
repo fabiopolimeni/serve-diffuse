@@ -2,7 +2,7 @@
 from diffusers import StableDiffusionPipeline
 
 pipe = StableDiffusionPipeline.from_pretrained("CompVis/stable-diffusion-v1-4")
-pipe = pipe.to("mps")
+pipe = pipe.to("cuda")
 
 prompt = "a photo of an astronaut riding a horse on mars"
 
