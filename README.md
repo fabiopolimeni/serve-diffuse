@@ -79,17 +79,17 @@ The majority of the step necessary to test build and deploy the are explained he
 
 ### Test
 
-Or, you can use docket images (need the docket deamon running):
+You can use docker images (need the docker deamon running):
 
 ```
 # If your model uses a CPU:
-docker run -d -p 5001:5000 <your-model-name>
+sudo docker run -d -p 5001:5000 <your-model-name>
 
 # If your model uses a GPU:
-docker run -d -p 5001:5000 --gpus all <your-model-name>
+sudo docker run -d -p 5001:5000 --gpus all <your-model-name>
 
 # If you're on an M1 Mac:
-docker run -d -p 5001:5000 --platform=linux/amd64 <your-model-name>
+sudo docker run -d -p 5001:5000 --platform=linux/amd64 <your-model-name>
 ```
 
 and then you can run the model with:
