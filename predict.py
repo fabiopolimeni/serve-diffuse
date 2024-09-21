@@ -2,8 +2,6 @@
 # https://cog.run/python
 
 import time
-from turtle import width
-from typing import Any
 from cog import BaseModel, BasePredictor, Input, Path
 import os
 import torch
@@ -58,7 +56,7 @@ class Predictor(BasePredictor):
 
         if prompt is None or prompt == "":
             raise Exception(
-                f"The prompt is required but was not set. Please set the prompt and try again."
+                "The prompt is required but was not set. Please set the prompt and try again."
             )
 
         if seed is None:
