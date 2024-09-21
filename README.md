@@ -45,16 +45,36 @@ Example:
 
 The majority of the step necessary to test build and deploy the are explained here https://replicate.com/docs/guides/push-a-model
 
+### Install
+
+#### Cog
+
+```
+>_: cd ..
+>_: sudo curl -o /usr/local/bin/cog -L https://github.com/replicate/cog/releases/latest/download/cog_`uname -s`_`uname -m`
+>_: sudo chmod +x /usr/local/bin/cog
+>_: cd serve-diffuse
+```
+
+#### Go
+
+```
+>_: wget https://go.dev/dl/go1.23.1.linux-amd64.tar.gz
+>_: sudo tar -C /usr/local -xzf go1.23.1.linux-amd64.tar.gz
+>_: echo 'export PATH=$PATH:/usr/local/go/bin' >> ~/.bashrc
+>_: source ~/.bashrc
+```
+
 ### Debug
 
 ```
->_: cog predict -i prompt="monkey scuba diving"
+>_: sudo cog predict -i prompt="monkey scuba diving"
 ```
 
 ### Build
 
 ```
->_: cog build -t <your-model-name>
+>_: sudo cog build -t <your-model-name>
 ```
 
 ### Test

@@ -1,7 +1,6 @@
 # Prediction interface for Cog ⚙️
 # https://cog.run/python
 
-import io
 import time
 from turtle import width
 from typing import Any
