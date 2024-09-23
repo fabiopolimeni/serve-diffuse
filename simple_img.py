@@ -14,7 +14,7 @@ elif platform.system() in ["Linux", "Windows"]:
 else:
     device = "cpu"
 
-print(f"Using device: {device}")
+print(f"Using device: {device} on platform: {platform.system()}")
 
 # Create the "outputs" folder if it doesn't exist
 if not os.path.exists("outputs"):
