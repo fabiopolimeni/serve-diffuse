@@ -43,7 +43,7 @@ class Predictor(BasePredictor):
             cache_dir=CONTROLNET_CACHE,
             torch_dtype=torch.float16,
             use_safetensors=True,
-            variant="fp16",
+            local_files_only=True,
         ).to(self.device, torch.float16)
 
         self.pipe = StableDiffusion3ControlNetPipeline.from_pretrained(
@@ -53,6 +53,7 @@ class Predictor(BasePredictor):
             torch_dtype=torch.float16,
             use_safetensors=True,
             variant="fp16",
+            local_files_only=True,
         ).to(self.device, torch.float16)
 
     @torch.inference_mode()
