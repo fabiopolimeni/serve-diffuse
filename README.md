@@ -10,7 +10,7 @@
 Then check wheteher pytorch is working:
 
 ```bash
->_: python simple_img.py
+>_: python try_torch.py
 ```
 
 Under Linux or Windows, you should have CUDA available, if not, you can install it with:
