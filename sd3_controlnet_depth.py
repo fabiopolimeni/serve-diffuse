@@ -9,8 +9,8 @@ from diffusers.utils import load_image
 # load hf_token from environment file
 from dotenv import load_dotenv
 
-# Load environment variables from .env.local file
-load_dotenv(".env.local")
+# Load environment variables from .env file
+load_dotenv(".env")
 
 # Get the HF_TOKEN from environment variables
 hf_token = os.getenv('HF_TOKEN')

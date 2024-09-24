@@ -5,4 +5,4 @@ build:
   system_packages:
     - "git"
 
-predict: "predict.py:Predictor"
+predict: "predict_sd3_controlnet.py:Predictor"

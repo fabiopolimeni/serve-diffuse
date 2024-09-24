@@ -1,0 +1,52 @@
+#!/usr/bin/env python
+
+import os
+import shutil
+import sys
+import torch
+
+from diffusers import StableDiffusion3ControlNetPipeline
+from diffusers.models import SD3ControlNetModel
+
+# load hf_token from environment file
+from dotenv import load_dotenv
+
+# append project directory to path so predict.py can be imported
+sys.path.append('.')
+
+from predict_sd3_controlnet import MODEL_CACHE, CONTROLNET_CACHE, MODEL_ID, CONTROLNET_ID  # noqa: E402
+
+# Load environment variables from .env file
+load_dotenv(".env")
+
+# Get the HF_TOKEN from environment variables
+hf_token = os.getenv('HF_TOKEN')
+
+if not hf_token:
+    raise ValueError("HF_TOKEN not found in environment variables. Please check your .env file.")
+
+# Set the HF_TOKEN environment variable
+os.environ["HF_TOKEN"] = hf_token
+
+if os.path.exists(MODEL_CACHE):
+    shutil.rmtree(MODEL_CACHE)
+os.makedirs(MODEL_CACHE, exist_ok=True)
+
+if os.path.exists(CONTROLNET_CACHE):
+    shutil.rmtree(CONTROLNET_CACHE)
+os.makedirs(CONTROLNET_CACHE, exist_ok=True)
+
+controlnet = SD3ControlNetModel.from_pretrained(
+    CONTROLNET_ID,
+    cache_dir=CONTROLNET_CACHE,
+    torch_dtype=torch.float16
+)
+controlnet.save_pretrained(CONTROLNET_CACHE)
+
+pipe = StableDiffusion3ControlNetPipeline.from_pretrained(
+    MODEL_ID,
+    cache_dir=MODEL_CACHE,
+    controlnet=controlnet,
+    torch_dtype=torch.float16
+)
+pipe.save_pretrained(MODEL_CACHE)
