@@ -125,6 +125,10 @@ class Predictor(BasePredictor):
             mime_type, base64_data = depth_image_base64.split(';base64,')
             depth_image = Image.open(io.BytesIO(base64.b64decode(base64_data)))
 
+        # Convert grayscale to RGB if necessary
+        if depth_image.mode != 'RGB':
+            depth_image = depth_image.convert('RGB')
+
         if seed is None:
             seed = int.from_bytes(os.urandom(2), "big")
 
