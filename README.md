@@ -108,9 +108,12 @@ TODO: ...
 
 ### Test with Cog
 
-Here are the steps to test the model locally:
+Before buiding the cog image we want to download the weights. In order to do so, you need to have a `.env` file with and HF_TOKEN setup, which needs to have granted access to the `diffuse-diffusion/stable-diffusion-v3-base` model.
+
+At this point you can run the following commands locally:
 
 ```bash
+>_: sudo cog run scripts/download_sd3_weights
 >_: sudo cog predict -i prompt="monkey scuba diving"
 ```
 
