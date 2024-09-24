@@ -119,6 +119,7 @@ class Predictor(BasePredictor):
         
         # Process the depth image
         if depth_image_path:
+            print(f"Using depth image from path: {depth_image_path}")
             depth_image = depth_image_path
         elif depth_image_base64:
             depth_image = Image.open(io.BytesIO(base64.b64decode(depth_image_base64)))
