@@ -122,7 +122,7 @@ class Predictor(BasePredictor):
             print(f"Using depth image from path: {depth_image_path}")
             depth_image = Image.open(depth_image_path)
         elif depth_image_base64:
-            mime_type, base64_data = base64.base64_string.split(';base64,')
+            mime_type, base64_data = depth_image_base64.split(';base64,')
             depth_image = Image.open(io.BytesIO(base64.b64decode(base64_data)))
 
         if seed is None:
