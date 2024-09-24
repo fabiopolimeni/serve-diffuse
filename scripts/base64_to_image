@@ -1,0 +1,55 @@
+#!/usr/bin/env python3
+import base64
+import sys
+
+def base64_to_image(base64_string, output_path=None):
+    try:
+        # Split the base64 string to separate mime type and actual base64 data
+        mime_type, base64_data = base64_string.split(';base64,')
+        mime_type = mime_type.split(':')[1]
+
+        # Decode the base64 string
+        image_data = base64.b64decode(base64_data)
+
+        # Determine the file extension based on mime type
+        extension = mime_type.split('/')[-1]
+        if extension == 'jpeg':
+            extension = 'jpg'
+
+        # Set the output filename
+        if output_path:
+            filename = output_path
+        else:
+            filename = f"image.{extension}"
+
+        # Write the image data to a file
+        with open(filename, 'wb') as f:
+            f.write(image_data)
+
+        return f"Image saved as {filename}"
+
+    except Exception as e:
+        return f"An error occurred: {str(e)}"
+
+if __name__ == "__main__":
+    output_path = None
+    
+    # Check for -o option
+    if '-o' in sys.argv:
+        try:
+            output_index = sys.argv.index('-o')
+            output_path = sys.argv[output_index + 1]
+            # Remove -o and its argument from sys.argv
+            del sys.argv[output_index:output_index+2]
+        except IndexError:
+            print("Error: Output filename missing after -o option")
+            sys.exit(1)
+    
+    # Read from stdin if no other arguments provided
+    if len(sys.argv) == 1:
+        base64_string = sys.stdin.read().strip()
+    else:
+        base64_string = sys.argv[1]
+
+    result = base64_to_image(base64_string, output_path)
+    print(result)

@@ -1,23 +1,39 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import base64
 import sys
+import os
+import mimetypes
 
 def image_to_base64(file_path):
     try:
         with open(file_path, "rb") as image_file:
             encoded_string = base64.b64encode(image_file.read()).decode('utf-8')
-            print(encoded_string)
+            mime_type, _ = mimetypes.guess_type(file_path)
+            if mime_type is None:
+                mime_type = "application/octet-stream"
+            result = f"data:{mime_type};base64,{encoded_string}"
+            return result
     except FileNotFoundError:
-        print(f"Error: The file '{file_path}' was not found.")
+        return f"Error: The file '{file_path}' was not found."
     except IOError:
-        print(f"Error: Unable to read the file '{file_path}'.")
+        return f"Error: Unable to read the file '{file_path}'."
     except Exception as e:
-        print(f"An unexpected error occurred: {str(e)}")
+        return f"An unexpected error occurred: {str(e)}"
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
-        print("Usage: python image_to_base64.py <image_file_path>")
-    else:
-        image_path = sys.argv[1]
-        image_to_base64(image_path)
+        print("Usage: ./image_to_base64 <image_file_path>")
+        sys.exit(1)
+    
+    image_path = sys.argv[1]
+    result = image_to_base64(image_path)
+    try:
+        sys.stdout.write(result)
+        sys.stdout.flush()
+    except BrokenPipeError:
+        # Python flushes standard streams on exit; redirect remaining output
+        # to devnull to avoid another BrokenPipeError at shutdown
+        devnull = os.open(os.devnull, os.O_WRONLY)
+        os.dup2(devnull, sys.stdout.fileno())
+        sys.exit(0)
