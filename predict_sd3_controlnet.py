@@ -11,6 +11,7 @@ from PIL import Image
 from cog import BaseModel, BasePredictor, Input, Path
 from diffusers import StableDiffusion3ControlNetPipeline
 from diffusers.models import SD3ControlNetModel
+from diffusers.utils import load_image
 
 CONTROLNET_ID = "InstantX/SD3-Controlnet-Depth"
 CONTROLNET_CACHE = "controlnet-cache"
@@ -120,7 +121,7 @@ class Predictor(BasePredictor):
         # Process the depth image
         if depth_image_path:
             print(f"Using depth image from path: {depth_image_path}")
-            depth_image = depth_image_path
+            depth_image = load_image(depth_image_path)
         elif depth_image_base64:
             depth_image = Image.open(io.BytesIO(base64.b64decode(depth_image_base64)))
 
