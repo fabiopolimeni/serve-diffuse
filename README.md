@@ -102,6 +102,10 @@ These are the steps to install the required tools:
 >_: source ~/.bashrc
 ```
 
+#### Replicate CLI
+
+TODO: ...
+
 ### Test with Cog
 
 Here are the steps to test the model locally:
