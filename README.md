@@ -7,6 +7,15 @@
   - Windows: .venv\Scripts\activate
 - pip install -r requirements.txt
 
+### Notes
+
+You may need to install diffusers from git directly, until some of the used pipelines will be added to the latest release.
+Currently, FluxControlNetPipeline is not part of 0.30.3.
+
+```bash
+pip install git+https://github.com/huggingface/diffusers
+```
+
 Then check wheteher pytorch is working:
 
 ```bash
