@@ -5,6 +5,7 @@ import torch
 from transformers import pipeline
 from PIL import Image
 from diffusers import FluxControlNetPipeline, FluxControlNetModel
+from diffusers.models import FluxMultiControlNetModel
 from dotenv import load_dotenv
 
 if __name__ == "__main__":
@@ -36,6 +37,8 @@ if __name__ == "__main__":
         else "mps" if torch.backends.mps.is_available() else "cpu"
     )
 
+    print(f"Running pipelines on device: {device}")
+
     os.makedirs(args.outdir, exist_ok=True)
 
     timestamp = int(time.time())
@@ -63,12 +66,15 @@ if __name__ == "__main__":
     base_model = "black-forest-labs/FLUX.1-dev"
     controlnet_model = "Shakker-Labs/FLUX.1-dev-ControlNet-Depth"
 
-    controlnet = FluxControlNetModel.from_pretrained(
+    controlnet_union = FluxControlNetModel.from_pretrained(
         controlnet_model, torch_dtype=torch.bfloat16
     )
+    controlnet = FluxMultiControlNetModel([controlnet_union])
+
     color_pipe = FluxControlNetPipeline.from_pretrained(
-        base_model, controlnet=controlnet, torch_dtype=torch.bfloat16, device=device
+        base_model, controlnet=controlnet, torch_dtype=torch.bfloat16
     )
+    color_pipe.to(device=device)
 
     width = depth_image.size[0]
     height = depth_image.size[1]
@@ -80,12 +86,14 @@ if __name__ == "__main__":
 
     color_image = color_pipe(
         prompt,
-        control_image=depth_image,
-        controlnet_conditioning_scale=0.5,
+        control_image=[depth_image],
+        control_mode=[2],
+        controlnet_conditioning_scale=[0.5],
         width=width,
         height=height,
         num_inference_steps=24,
         guidance_scale=3.5,
+        generator=torch.manual_seed(42),
     ).images[0]
 
     color_output = (
