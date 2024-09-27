@@ -2,10 +2,23 @@
 
 ## Install
 
-- python -m venv .venv
-  - Unix: source .venv/bin/activate
-  - Windows: .venv\Scripts\activate
-- pip install -r requirements.txt
+For a clean user enviroment, that is, pip package do not interfeer each other:
+
+```bash
+pip uninstall -y $(pip -v list | grep ${HOME}/.local | awk '{printf "%s ", $1}')
+```
+
+```bash
+python -m venv .venv
+```
+
+```bash
+source .venv/bin/activate (on Windows: .venv\Scripts\activate)
+```
+
+```bash
+pip install -r requirements.txt
+```
 
 ### Notes
 
@@ -19,7 +32,7 @@ pip install git+https://github.com/huggingface/diffusers
 Then check wheteher pytorch is working:
 
 ```bash
->_: python try_torch.py
+python try_torch.py
 ```
 
 Under Linux or Windows, you should have CUDA available, if not, you can install it with:
@@ -27,7 +40,7 @@ Under Linux or Windows, you should have CUDA available, if not, you can install 
 Intall the CUDA Toolkit from <https://developer.nvidia.com/cuda-downloads>, then make sure you use the correct pytorch version.
 
 ```bash
->_: pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu124
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu124
 ```
 
 Now the above command should print something similar to:
@@ -43,8 +56,10 @@ CUDA is available? True
 
 ## Examples
 
-- python simple_img.py
-- python sd3_controlnet_depth.py
+```bash
+python simple_img.py
+python sd3_controlnet_depth.py
+```
 
 ## Debugging
 
@@ -96,19 +111,19 @@ These are the steps to install the required tools:
 #### Cog
 
 ```bash
->_: cd ..
->_: sudo curl -o /usr/local/bin/cog -L https://github.com/replicate/cog/releases/latest/download/cog_`uname -s`_`uname -m`
->_: sudo chmod +x /usr/local/bin/cog
->_: cd serve-diffuse
+cd ..
+sudo curl -o /usr/local/bin/cog -L https://github.com/replicate/cog/releases/latest/download/cog_`uname -s`_`uname -m`
+sudo chmod +x /usr/local/bin/cog
+cd serve-diffuse
 ```
 
 #### Go
 
 ```bash
->_: wget https://go.dev/dl/go1.23.1.linux-amd64.tar.gz
->_: sudo tar -C /usr/local -xzf go1.23.1.linux-amd64.tar.gz
->_: echo 'export PATH=$PATH:/usr/local/go/bin' >> ~/.bashrc
->_: source ~/.bashrc
+wget https://go.dev/dl/go1.23.1.linux-amd64.tar.gz
+sudo tar -C /usr/local -xzf go1.23.1.linux-amd64.tar.gz
+echo 'export PATH=$PATH:/usr/local/go/bin' >> ~/.bashrc
+source ~/.bashrc
 ```
 
 #### Replicate CLI
@@ -122,14 +137,14 @@ Before buiding the cog image we want to download the weights. In order to do so,
 At this point you can run the following commands locally:
 
 ```bash
->_: sudo cog run scripts/download_sd3_weights
->_: sudo cog predict -i prompt="monkey scuba diving"
+sudo cog run scripts/download_sd3_weights
+sudo cog predict -i prompt="monkey scuba diving"
 ```
 
 ### Build
 
 ```bash
->_: sudo cog build -t <your-model-name>
+sudo cog build -t <your-model-name>
 ```
 
 ### Test with Docker
@@ -150,7 +165,7 @@ sudo docker run -d -p 5001:5000 --platform=linux/amd64 <your-model-name>
 and then you can run the model with:
 
 ```bash
->_: curl http://localhost:5001/predictions -X POST \
+curl http://localhost:5001/predictions -X POST \
     --header "Content-Type: application/json" \
     --data '{"input": {"prompt": "a fury dragon" }}'
 ```
@@ -158,6 +173,6 @@ and then you can run the model with:
 ### Deploy
 
 ```bash
->_: cog login
->_: cog push r8.im/<replicate-username>/<your-model-name>
+cog login
+cog push r8.im/<replicate-username>/<your-model-name>
 ```
