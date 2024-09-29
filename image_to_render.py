@@ -43,8 +43,7 @@ if __name__ == "__main__":
 
     timestamp = int(time.time())
 
-    # Create the depth map out of input image
-
+    # Create the depth map out of the input image
     depth_pipe = pipeline(
         task="depth-estimation",
         model="depth-anything/Depth-Anything-V2-Base-hf",
@@ -61,7 +60,6 @@ if __name__ == "__main__":
 
     # Use the depth map to drive the image generation
     prompt = args.prompt
-    # prompt = prompt.replace('{', '{{').replace('}', '}}')
 
     base_model = "black-forest-labs/FLUX.1-dev"
     controlnet_model = "Shakker-Labs/FLUX.1-dev-ControlNet-Depth"
@@ -91,7 +89,7 @@ if __name__ == "__main__":
         controlnet_conditioning_scale=[0.5],
         width=width,
         height=height,
-        num_inference_steps=24,
+        num_inference_steps=6,
         guidance_scale=3.5,
         generator=torch.manual_seed(42),
     ).images[0]
