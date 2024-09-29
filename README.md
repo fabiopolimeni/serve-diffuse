@@ -61,6 +61,33 @@ python simple_img.py
 python sd3_controlnet_depth.py
 ```
 
+```bash
+python image_to_render.py --image inputs/monkey.png --seed 42 --steps 24 --prompt "A monkey walking on the sea surface"
+```
+![alt text](examples/monkey_color-1727646138.png)
+![alt text](examples/monkey_depth-1727646138.png)
+
+
+```bash
+python image_to_render.py --image inputs/monkey_true_depth.png --is_depth=True --seed 42 --steps 24 --prompt "A monkey walking on the sea surface" --depth_weight=0.45
+```
+
+![alt text](examples/monkey_true_depth_color-1727646408.png)
+
+
+```bash
+python image_to_render.py --image inputs/monkey_true_depth.png --is_depth=True --seed 42 --steps 24 --prompt "A monkey walking on the sea surface, old painting" --depth_weight=0.5
+```
+
+![alt text](examples/monkey_true_depth_color-old_painting-1727646528.png)
+
+```bash
+python image_to_render.py --image inputs/monkey_true_depth.png --is_depth=True --seed 42 --steps 24 --prompt "A monkey walking on the sea surface, watercolor" --depth_weight=0.5
+```
+
+![alt text](examples/monkey_true_depth_color-watercolor-1727646630.png)
+
+
 ## Debugging
 
 ### CUDA memory usage
@@ -93,8 +120,6 @@ python sd3_controlnet_depth.py
 ### Apple Silicon
 
 If you will receive aan error about being out of memory, you can try tweak PYTORCH_MPS_HIGH_WATERMARK_RATIO giving a value between 0.0 and 1.0. The lower the value, the more it will take, because it will use more swapping space on the disk to load the models.
-
-Example:
 
 ```bash
 >_ PYTORCH_MPS_HIGH_WATERMARK_RATIO=0.6 python3 sd3_controlnet_depth.py

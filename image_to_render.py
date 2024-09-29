@@ -32,7 +32,7 @@ if __name__ == "__main__":
     parser.add_argument("--steps", type=ranged_type(int, 1, 40), default=4)
     parser.add_argument("--guidance", type=ranged_type(float, 0, 10), default=3.5)
     parser.add_argument("--is_depth", type=bool, required=False, default=False)
-    parser.add_argument("--depth_weight", type=ranged_type(float, 0, 1), default=0.7)
+    parser.add_argument("--depth_weight", type=ranged_type(float, 0, 1), default=0.5)
     parser.add_argument("--outdir", type=str, default="./outputs")
     parser.add_argument("--seed", type=int, default=42)
 
@@ -98,7 +98,7 @@ if __name__ == "__main__":
     # If seed is not provided, use a random seed
     seed = args.seed if not None else int.from_bytes(os.urandom(2), "big")
 
-    generator = torch.Generator(device=device).manual_seed(seed)
+    generator = torch.manual_seed(seed)
     color_image = color_pipe(
         prompt,
         control_image=[depth_image],
