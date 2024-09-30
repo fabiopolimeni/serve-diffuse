@@ -52,8 +52,8 @@ class DepthRenderer:
 
     def render_image(
         self,
-        image,
-        prompt,
+        base_image: Image,
+        prompt: str,
         steps=4,
         guidance=3.5,
         is_depth=False,
@@ -61,7 +61,7 @@ class DepthRenderer:
         seed=None,
     ):
 
-        depth_image = Image.open(image)
+        depth_image = base_image
 
         if not is_depth:
             print("Converting image to depth")
@@ -75,7 +75,7 @@ class DepthRenderer:
 
         print(f"Rendering image with seed {seed}")
         color_image = self.color_pipe(
-            prompt,
+            prompt=prompt,
             control_image=[depth_image],
             control_mode=[2],
             controlnet_conditioning_scale=[depth_weight],

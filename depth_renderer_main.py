@@ -1,6 +1,7 @@
 import argparse
 import os
 import time
+from PIL import Image
 from depth_renderer import DepthRenderer
 from utils import ranged_type
 
@@ -43,9 +44,11 @@ if __name__ == "__main__":
     renderer = DepthRenderer(base_model, controlnet_model)
     renderer.load_pipelines()
 
+    base_image = Image.open(args.image)
+
     timestamp = int(time.time())
     color_image, depth_image = renderer.render_image(
-        args.image,
+        base_image,
         args.prompt,
         args.steps,
         args.guidance,
@@ -53,6 +56,8 @@ if __name__ == "__main__":
         args.depth_weight,
         args.seed,
     )
+
+    print(f"Image generated in {time.time() - timestamp} seconds")
 
     # Save depth image
     if args.save_depth:
