@@ -11,19 +11,6 @@ from dotenv import load_dotenv
 from utils import ranged_type
 
 if __name__ == "__main__":
-    # Load environment variables from .env file
-    load_dotenv(".env")
-
-    # Get the HF_TOKEN from environment variables
-    hf_token = os.getenv("HF_TOKEN")
-
-    if not hf_token:
-        raise ValueError(
-            "HF_TOKEN not found in environment variables. Add it to your environment variables or to an .env file."
-        )
-
-    # Set the HF_TOKEN environment variable
-    os.environ["HF_TOKEN"] = hf_token
 
     parser = argparse.ArgumentParser(description="Depth Anything V2")
 
@@ -38,15 +25,43 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
+    # Load environment variables from .env file
+    load_dotenv(".env")
+
+    # Get the HF_TOKEN from environment variables.
+    # This is necessary to load the FLUX.1-dev model from the Hugging Face Hub.
+    hf_token = os.getenv("HF_TOKEN")
+
+    if not hf_token:
+        raise ValueError(
+            "HF_TOKEN not found in environment variables. Add it to your environment variables or to an .env file."
+        )
+
+    # Set the HF_TOKEN environment variable
+    os.environ["HF_TOKEN"] = hf_token
+
     device = (
         "cuda"
         if torch.cuda.is_available()
         else "mps" if torch.backends.mps.is_available() else "cpu"
     )
 
-    print(f"Running pipelines on device: {device}")
+    print(f"Pipelines will run on {device}")
 
     os.makedirs(args.outdir, exist_ok=True)
+
+    base_model = "black-forest-labs/FLUX.1-dev"
+    controlnet_model = "Shakker-Labs/FLUX.1-dev-ControlNet-Depth"
+
+    controlnet_union = FluxControlNetModel.from_pretrained(
+        controlnet_model, torch_dtype=torch.bfloat16
+    )
+    controlnet = FluxMultiControlNetModel([controlnet_union])
+
+    color_pipe = FluxControlNetPipeline.from_pretrained(
+        base_model, controlnet=controlnet, torch_dtype=torch.bfloat16
+    )
+    color_pipe.to(device=device)
 
     timestamp = int(time.time())
 
@@ -73,19 +88,6 @@ if __name__ == "__main__":
 
     # Use the depth map to drive the image generation
     prompt = args.prompt
-
-    base_model = "black-forest-labs/FLUX.1-dev"
-    controlnet_model = "Shakker-Labs/FLUX.1-dev-ControlNet-Depth"
-
-    controlnet_union = FluxControlNetModel.from_pretrained(
-        controlnet_model, torch_dtype=torch.bfloat16
-    )
-    controlnet = FluxMultiControlNetModel([controlnet_union])
-
-    color_pipe = FluxControlNetPipeline.from_pretrained(
-        base_model, controlnet=controlnet, torch_dtype=torch.bfloat16
-    )
-    color_pipe.to(device=device)
 
     width = depth_image.size[0]
     height = depth_image.size[1]
