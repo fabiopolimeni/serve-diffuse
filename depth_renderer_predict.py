@@ -1,12 +1,13 @@
 # Prediction interface for Cog ⚙️
 # https://cog.run/python
 
-from email.mime import base
 import time
 from PIL import Image
 from cog import BaseModel, BasePredictor, Input, Path
 import os
 import torch
+import base64
+import io
 from depth_renderer import DepthRenderer
 
 
@@ -67,7 +68,7 @@ class Predictor(BasePredictor):
             )
 
         # Check if at least one depth image input is provided
-        if base_image_url is None and depth_image_base64 is None:
+        if base_image_url is None and base_image_base64 is None:
             raise ValueError(
                 "Either an image URL or file, or a base64 string, must be provided."
             )
@@ -75,7 +76,7 @@ class Predictor(BasePredictor):
         base_image = None
         if base_image_url:
             base_image = Image.open(base_image_url)
-        elif depth_image_base64:
+        elif base_image_base64:
             mime_type, base64_data = base_image_base64.split(";base64,")
             base_image = Image.open(io.BytesIO(base64.b64decode(base64_data)))
 

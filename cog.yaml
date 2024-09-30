@@ -5,4 +5,4 @@ build:
   system_packages:
     - "git"
 
-predict: "predict_sd3_controlnet.py:Predictor"
+predict: "depth_renderer_predict.py:Predictor"

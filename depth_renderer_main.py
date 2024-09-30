@@ -9,10 +9,24 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description="Image to render")
 
-    parser.add_argument("--image", type=str, required=True)
-    parser.add_argument("--prompt", type=str, required=True)
-    parser.add_argument("--steps", type=ranged_type(int, 1, 40), default=4)
-    parser.add_argument("--guidance", type=ranged_type(float, 0, 10), default=3.5)
+    parser.add_argument(
+        "--image", type=str, required=True, help="The base image that drives the render"
+    )
+    parser.add_argument(
+        "--prompt", type=str, required=True, help="The prompt to use for the render"
+    )
+    parser.add_argument(
+        "--steps",
+        type=ranged_type(int, 1, 40),
+        default=4,
+        help="Number of denoising steps",
+    )
+    parser.add_argument(
+        "--guidance",
+        type=ranged_type(float, 0, 10),
+        default=3.5,
+        help="Scale for classifier-free guidance",
+    )
     parser.add_argument(
         "--is_depth",
         type=bool,
@@ -20,13 +34,23 @@ if __name__ == "__main__":
         default=False,
         help="If true, the depth map will be extracred from the image",
     )
-    parser.add_argument("--depth_weight", type=ranged_type(float, 0, 1), default=0.5)
-    parser.add_argument("--outdir", type=str, default="./outputs")
+    parser.add_argument(
+        "--depth_weight",
+        type=ranged_type(float, 0, 1),
+        default=0.5,
+        help="Scale for depth conditioning",
+    )
+    parser.add_argument(
+        "--outdir",
+        type=str,
+        default="./outputs",
+        help="Directory to save the output images. Defaults to ./outputs",
+    )
     parser.add_argument(
         "--seed",
         type=int,
         default=42,
-        help="Seed for the generator. If None, a random seed will be used",
+        help="Seed for the generator. If not provided, a random seed will be used",
     )
     parser.add_argument(
         "--save_depth",

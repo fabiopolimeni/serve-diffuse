@@ -140,6 +140,14 @@ sudo chmod +x /usr/local/bin/cog
 cd serve-diffuse
 ```
 
+After installing cog, you may have to install docker, and if on MacOS, make sure you have it accessible from the CLI.
+
+Add the following line to your ~/.zshrc file:
+
+```bash
+export PATH="$PATH:/Applications/Docker.app/Contents/Resources/bin/"
+```
+
 #### Go
 
 ```bash
