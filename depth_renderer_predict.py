@@ -47,7 +47,7 @@ class Predictor(BasePredictor):
             description="Number of denoising steps", ge=1, le=40, default=10
         ),
         guidance_scale: float = Input(
-            description="Scale for classifier-free guidance", ge=1, le=20, default=7
+            description="Scale for classifier-free guidance", ge=1, le=20, default=3.5
         ),
         depth_scale: float = Input(
             description="Scale for depth conditioning", ge=0, le=1, default=0.5
