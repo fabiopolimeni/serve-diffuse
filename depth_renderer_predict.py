@@ -103,4 +103,6 @@ class Predictor(BasePredictor):
         color_image_path = os.path.join(self.outdir, color_image_filename)
         color_image.save(color_image_path)
 
-        return Output(color_image=color_image_path, depth_image=depth_image_path)
+        return Output(
+            color_image=Path(color_image_path), depth_image=Path(depth_image_path)
+        )
