@@ -8,6 +8,15 @@ For a clean user enviroment, that is, pip package do not interfeer each other:
 pip uninstall -y $(pip -v list | grep ${HOME}/.local | awk '{printf "%s ", $1}')
 ```
 
+### Upgrade Python
+
+```bash
+sudo apt -y update && sudo apt -y install python3.11.1-full
+pythonVERSION -m venv VENV-NAME
+```
+
+### Virtual Environment
+
 ```bash
 python -m venv .venv
 ```
