@@ -62,26 +62,26 @@ python sd3_controlnet_depth.py
 ```
 
 ```bash
-python image_to_render.py --image inputs/monkey.png --seed 42 --steps 24 --prompt "A monkey walking on the sea surface"
+python depth_renderer_main.py --image inputs/monkey.png --seed 42 --steps 24 --prompt "A monkey walking on the sea surface"
 ```
 
 ![alt text](examples/monkey_color-1727646138.png)
 ![alt text](examples/monkey_depth-1727646138.png)
 
 ```bash
-python image_to_render.py --image inputs/monkey_true_depth.png --is_depth=True --seed 42 --steps 24 --prompt "A monkey walking on the sea surface" --depth_weight=0.45
+python depth_renderer_main.py --image inputs/monkey_true_depth.png --is_depth=True --seed 42 --steps 24 --prompt "A monkey walking on the sea surface" --depth_weight=0.45
 ```
 
 ![alt text](examples/monkey_true_depth_color-1727646408.png)
 
 ```bash
-python image_to_render.py --image inputs/monkey_true_depth.png --is_depth=True --seed 42 --steps 24 --prompt "A monkey walking on the sea surface, old painting" --depth_weight=0.5
+python depth_renderer_main.py --image inputs/monkey_true_depth.png --is_depth=True --seed 42 --steps 24 --prompt "A monkey walking on the sea surface, old painting" --depth_weight=0.5
 ```
 
 ![alt text](examples/monkey_true_depth_color-old_painting-1727646528.png)
 
 ```bash
-python image_to_render.py --image inputs/monkey_true_depth.png --is_depth=True --seed 42 --steps 24 --prompt "A monkey walking on the sea surface, watercolor" --depth_weight=0.5
+python depth_renderer_main.py --image inputs/monkey_true_depth.png --is_depth=True --seed 42 --steps 24 --prompt "A monkey walking on the sea surface, watercolor" --depth_weight=0.5
 ```
 
 ![alt text](examples/monkey_true_depth_color-watercolor-1727646630.png)
