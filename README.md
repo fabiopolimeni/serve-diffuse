@@ -11,8 +11,8 @@ pip uninstall -y $(pip -v list | grep ${HOME}/.local | awk '{printf "%s ", $1}')
 ### Upgrade Python
 
 ```bash
-sudo apt -y update && sudo apt -y install python3.11.1-full
-pythonVERSION -m venv VENV-NAME
+sudo apt -y update && sudo apt -y install python3.11-full
+python3.11 -m venv .venv
 ```
 
 ### Virtual Environment
@@ -49,6 +49,29 @@ Under Linux or Windows, you should have CUDA available, if not, you can install 
 Intall the CUDA Toolkit from <https://developer.nvidia.com/cuda-downloads>, then make sure you use the correct pytorch version.
 
 ```bash
+>_: nvidia-smi
++---------------------------------------------------------------------------------------+
+| NVIDIA-SMI 535.129.03             Driver Version: 535.129.03   CUDA Version: 12.2     |
+|-----------------------------------------+----------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |         Memory-Usage | GPU-Util  Compute M. |
+|                                         |                      |               MIG M. |
+|=========================================+======================+======================|
+|   0  NVIDIA A10                     On  | 00000000:08:00.0 Off |                    0 |
+|  0%   33C    P8              15W / 150W |      7MiB / 23028MiB |      0%      Default |
+|                                         |                      |                  N/A |
++-----------------------------------------+----------------------+----------------------+
+                                                                                         
++---------------------------------------------------------------------------------------+
+| Processes:                                                                            |
+|  GPU   GI   CI        PID   Type   Process name                            GPU Memory |
+|        ID   ID                                                             Usage      |
+|=======================================================================================|
+|  No running processes found                                                           |
++---------------------------------------------------------------------------------------+
+```
+
+```bash
 pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu124
 ```
 
@@ -65,10 +88,16 @@ CUDA is available? True
 
 ## Examples
 
+### Setup
+
+Add an `.env` file with the `HF_TOKEN=<your hf token>` set.
+Then execute:
+
 ```bash
-python simple_img.py
-python sd3_controlnet_depth.py
+./scripts/download_flux_weights
 ```
+
+### Testing
 
 ```bash
 python depth_renderer_main.py --image inputs/monkey.png --seed 42 --steps 24 --prompt "A monkey walking on the sea surface"
@@ -94,33 +123,6 @@ python depth_renderer_main.py --image inputs/monkey_true_depth.png --is_depth=Tr
 ```
 
 ![alt text](examples/monkey_true_depth_color-watercolor-1727646630.png)
-
-## Debugging
-
-### CUDA memory usage
-
-```text
->_ nvidia-smi
-+---------------------------------------------------------------------------------------+
-| NVIDIA-SMI 535.129.03             Driver Version: 535.129.03   CUDA Version: 12.2     |
-|-----------------------------------------+----------------------+----------------------+
-| GPU  Name                 Persistence-M | Bus-Id        Disp.A | Volatile Uncorr. ECC |
-| Fan  Temp   Perf          Pwr:Usage/Cap |         Memory-Usage | GPU-Util  Compute M. |
-|                                         |                      |               MIG M. |
-|=========================================+======================+======================|
-|   0  NVIDIA A10                     On  | 00000000:08:00.0 Off |                    0 |
-|  0%   33C    P8              15W / 150W |      7MiB / 23028MiB |      0%      Default |
-|                                         |                      |                  N/A |
-+-----------------------------------------+----------------------+----------------------+
-                                                                                         
-+---------------------------------------------------------------------------------------+
-| Processes:                                                                            |
-|  GPU   GI   CI        PID   Type   Process name                            GPU Memory |
-|        ID   ID                                                             Usage      |
-|=======================================================================================|
-|  No running processes found                                                           |
-+---------------------------------------------------------------------------------------+
-```
 
 ## Trubleshoting
 
