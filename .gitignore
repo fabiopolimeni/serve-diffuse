@@ -166,5 +166,6 @@ cython_debug/
 # Cog
 .cog/
 outputs/
+results/
 output*
 *-cache/
