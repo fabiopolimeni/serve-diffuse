@@ -94,11 +94,13 @@ class Predictor(BasePredictor):
         print(f"Image generated in {time.time() - timestamp} seconds")
 
         # Save depth image
-        depth_output = f"depth-{timestamp}.png"
-        depth_image.save(os.path.join(self.outdir, depth_output))
+        depth_image_filename = f"depth-{timestamp}.png"
+        depth_image_path = os.path.join(self.outdir, depth_image_filename)
+        depth_image.save(depth_image_path)
 
         # Save color image
-        color_output = f"_color-{timestamp}.png"
-        color_image.save(os.path.join(self.outdir, color_output))
+        color_image_filename = f"color-{timestamp}.png"
+        color_image_path = os.path.join(self.outdir, color_image_filename)
+        color_image.save(color_image_path)
 
-        return Output(color_image=color_image, depth_image=depth_image)
+        return Output(color_image=color_image_path, depth_image=depth_image_path)
