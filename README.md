@@ -142,6 +142,14 @@ The majority of the step necessary to test build and deploy the are explained he
 
 These are the steps to install the required tools:
 
+### Docker
+
+```bash
+sudo apt -y update && sudo apt -y install docker.io docker-buildx nvidia-container-toolkit && \
+sudo systemctl daemon-reload && \
+sudo systemctl restart docker
+```
+
 #### Cog
 
 ```bash
