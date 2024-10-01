@@ -4,13 +4,18 @@ from transformers import pipeline
 from PIL import Image
 from diffusers import FluxControlNetPipeline, FluxControlNetModel
 from diffusers.models import FluxMultiControlNetModel
-from dotenv import load_dotenv
+
+# from dotenv import load_dotenv
+
+MODEL_ID = "black-forest-labs/FLUX.1-dev"
+CONTROLNET_ID = "Shakker-Labs/FLUX.1-dev-ControlNet-Depth"
+CACHE_DIR = "checkpoints"
 
 
 class DepthRenderer:
-    def __init__(self, base_model, controlnet_model):
-        self.base_model = base_model
-        self.controlnet_model = controlnet_model
+    def __init__(self):
+        self.base_model_id = MODEL_ID
+        self.controlnet_model_id = CONTROLNET_ID
         self.device = self._get_device()
         self.color_pipe = None
         self.depth_pipe = None
@@ -23,24 +28,33 @@ class DepthRenderer:
         )
 
     def load_pipelines(self):
-        load_dotenv(".env")
 
-        hf_token = os.getenv("HF_TOKEN")
-        if not hf_token:
-            raise ValueError(
-                "HF_TOKEN not found in environment variables. Add it to your environment variables or to an .env file."
-            )
+        # base_model = FluxPipeline.from_pretrained(
+        #     self.base_model_id,
+        #     cache_dir=CACHE_DIR,
+        #     torch_dtype=torch.bfloat16,
+        #     use_safetensors=True,
+        #     local_files_only=True,
+        # )
+        # base_model.to(device=self.device)
 
-        os.environ["HF_TOKEN"] = hf_token
-
-        print(f"Pipelines will run on {self.device}")
-
-        controlnet_union = FluxControlNetModel.from_pretrained(
-            self.controlnet_model, torch_dtype=torch.bfloat16
+        controlnet_model = FluxControlNetModel.from_pretrained(
+            self.controlnet_model_id,
+            cache_dir=CACHE_DIR,
+            torch_dtype=torch.bfloat16,
+            use_safetensors=True,
+            local_files_only=True,
         )
-        controlnet = FluxMultiControlNetModel([controlnet_union])
+        controlnet_model.to(device=self.device)
+
+        controlnet = FluxMultiControlNetModel([controlnet_model])
+
         self.color_pipe = FluxControlNetPipeline.from_pretrained(
-            self.base_model, controlnet=controlnet, torch_dtype=torch.bfloat16
+            self.base_model_id,
+            controlnet=controlnet,
+            cache_dir=CACHE_DIR,
+            torch_dtype=torch.bfloat16,
+            use_safetensors=True,
         )
         self.color_pipe.to(device=self.device)
 
@@ -50,6 +64,7 @@ class DepthRenderer:
             device=self.device,
         )
 
+    @torch.inference_mode()
     def render_image(
         self,
         base_image: Image,

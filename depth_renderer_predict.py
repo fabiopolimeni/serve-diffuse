@@ -23,9 +23,7 @@ class Predictor(BasePredictor):
         self.outdir = "results"
         os.makedirs(self.outdir, exist_ok=True)
 
-        base_model = "black-forest-labs/FLUX.1-dev"
-        controlnet_model = "Shakker-Labs/FLUX.1-dev-ControlNet-Depth"
-        self.renderer = DepthRenderer(base_model, controlnet_model)
+        self.renderer = DepthRenderer()
         self.renderer.load_pipelines()
 
     @torch.inference_mode()

@@ -1,0 +1,49 @@
+#!/usr/bin/env python
+
+import os
+import sys
+import torch
+
+from diffusers import FluxPipeline, FluxControlNetModel
+
+# load hf_token from environment file
+from dotenv import load_dotenv
+
+# append project directory to path so predict.py can be imported
+sys.path.append(".")
+
+from depth_renderer import (
+    CACHE_DIR,
+    MODEL_ID,
+    CONTROLNET_ID,
+)  # noqa: E402
+
+# Load environment variables from .env file
+load_dotenv(".env")
+
+# Get the HF_TOKEN from environment variables
+hf_token = os.getenv("HF_TOKEN")
+
+if not hf_token:
+    raise ValueError(
+        "HF_TOKEN not found in environment variables. Please check your .env file."
+    )
+
+# Set the HF_TOKEN environment variable
+os.environ["HF_TOKEN"] = hf_token
+
+os.makedirs(CACHE_DIR, exist_ok=True)
+
+controlnet_model = FluxControlNetModel.from_pretrained(
+    CONTROLNET_ID, cache_dir=CACHE_DIR, torch_dtype=torch.float16
+)
+controlnet_model.save_pretrained(CACHE_DIR)
+
+pipe = FluxPipeline.from_pretrained(
+    MODEL_ID,
+    cache_dir=CACHE_DIR,
+    torch_dtype=torch.float16,
+)
+pipe.save_pretrained(CACHE_DIR)
+
+del os.environ["HF_TOKEN"]

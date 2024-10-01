@@ -176,7 +176,7 @@ sudo cog predict -i prompt="monkey on a desolated urban asphalt" -i base_image_u
 ### Build
 
 ```bash
-sudo cog build -t <your-model-name>
+sudo cog build --separate-weights -t <your-model-name>
 ```
 
 ### Test with Docker

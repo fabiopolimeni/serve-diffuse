@@ -63,9 +63,7 @@ if __name__ == "__main__":
 
     os.makedirs(args.outdir, exist_ok=True)
 
-    base_model = "black-forest-labs/FLUX.1-dev"
-    controlnet_model = "Shakker-Labs/FLUX.1-dev-ControlNet-Depth"
-    renderer = DepthRenderer(base_model, controlnet_model)
+    renderer = DepthRenderer()
     renderer.load_pipelines()
 
     base_image = Image.open(args.image)
@@ -95,3 +93,5 @@ if __name__ == "__main__":
         f"{os.path.splitext(os.path.basename(args.image))[0]}_color-{timestamp}.png"
     )
     color_image.save(os.path.join(args.outdir, color_output))
+
+    print(f"Color image saved to {color_output}")
