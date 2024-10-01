@@ -165,11 +165,12 @@ TODO: ...
 
 Before buiding the cog image we want to download the weights. In order to do so, you need to have a `.env` file with and HF_TOKEN setup, which needs to have granted access to the `diffuse-diffusion/stable-diffusion-v3-base` model.
 
-At this point you can run the following commands locally:
+At this point you can run some of following commands locally to try the cog image is working:
 
 ```bash
 sudo cog run scripts/download_sd3_weights
 sudo cog predict -i prompt="monkey scuba diving"
+sudo cog predict -i prompt="monkey on a desolated urban asphalt" -i base_image_url=@inputs/monkey.png
 ```
 
 ### Build
